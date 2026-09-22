@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>温馨提示</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #1e1e1e; /* 深色背景，模拟屏幕 */
+            overflow: hidden; /* 防止滚动条 */
+            font-family: "Microsoft YaHei", sans-serif;
+            user-select: none;
+        }
+        /* 弹窗的样式 */
+        .popup {
+            position: absolute;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            padding: 15px;
+            width: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+            color: #333;
+            animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            transition: all 0.2s;
+        }
+        /* 弹窗标题栏 (模拟系统弹窗) */
+        .popup::before {
+            content: "温馨提示  ✖";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 20px;
+            background-color: #f1f1f1;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+            font-size: 10px;
+            color: #666;
+            line-height: 20px;
+            padding-left: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        /* 弹窗内部文字 */
+        .popup span {
+            margin-top: 15px;
+            line-height: 1.4;
+        }
+
+        /* 弹出动画 */
+        @keyframes popIn {
+            0% { transform: scale(0.5); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<script>
+    // 1. 祝福语库
+    const messages = [
+        "保持微笑呀", "今天过得开心嘛", "记得吃水果", "天冷了，多穿衣服",
+        "愿所有烦恼都消失", "多喝水哦~", "别熬夜", "梦想成真",
+        "我想你了", "顺顺利利", "好好爱自己", "期待下一次见面",
+        "天天开心", "乐乐天天开心", "早点休息", "乐乐金榜题名"
+    ];
+
+    // 2. 颜色库
+    const colors = [
+        "#FFB6C1", "#87CEEB", "#98FB98", "#FFD700", "#FFA07A",
+        "#E6E6FA", "#F0E68C", "#AFEEEE", "#FFE4E1", "#FFFFFF"
+    ];
+
+    let count = 0;
+    const maxCount = 50; // 最多生成50个弹窗
+
+    function createPopup() {
+        if (count >= maxCount) return;
+
+        const popup = document.createElement('div');
+        popup.className = 'popup';
+        
+        // 随机选取祝福语和颜色
+        const msg = messages[Math.floor(Math.random() * messages.length)];
+        const bgColor = colors[Math.floor(Math.random() * colors.length)];
+        
+        popup.style.backgroundColor = bgColor;
+        
+        // 随机大小
+        const width = Math.random() * 80 + 150; // 150 - 230px
+        const height = Math.random() * 40 + 70;  // 70 - 110px
+        popup.style.width = width + 'px';
+        popup.style.height = height + 'px';
+
+        // 随机位置 (屏幕范围内)
+        const x = Math.random() * (window.innerWidth - width);
+        const y = Math.random() * (window.innerHeight - height);
+        popup.style.left = x + 'px';
+        popup.style.top = y + 'px';
+
+        // 内容
+        popup.innerHTML = `<span>${msg}</span>`;
+
+        // 点击关闭
+        popup.onclick = function() {
+            this.style.transform = 'scale(0)';
+            setTimeout(() => this.remove(), 200);
+        }
+
+        document.body.appendChild(popup);
+        count++;
+
+        // 控制生成节奏，模拟 Python 的 time.sleep
+        setTimeout(createPopup, 80); // 80毫秒生成一个
+    }
+
+    // 启动
+    window.onload = createPopup;
+</script>
+</body>
+</html>
